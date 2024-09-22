@@ -1,0 +1,15 @@
+<!-- register.component.html -->
+<form (ngSubmit)="register()" #registerForm="ngForm">
+  <input type="text" [(ngModel)]="name" name="name" required placeholder="Full Name">
+  <input type="email" [(ngModel)]="email" name="email" required placeholder="Email">
+  <input type="text" [(ngModel)]="userName" name="userName" required placeholder="Username">
+  <input type="password" [(ngModel)]="password" name="password" required placeholder="Password">
+  <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
+  <input type="text" [(ngModel)]="mobile" name="mobile" required placeholder="Mobile Number">
+
+  <div *ngIf="password && confirmPassword && password !== confirmPassword">
+    <p style="color: red;">Passwords do not match.</p>
+  </div>
+
+  <button type="submit" [disabled]="!registerForm.form.valid || password !== confirmPassword">Register</button>
+</form>

@@ -1,0 +1,10 @@
+nav{
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  flex-wrap: wrap;
+&:button{
+  width: 60px;
+}
+}

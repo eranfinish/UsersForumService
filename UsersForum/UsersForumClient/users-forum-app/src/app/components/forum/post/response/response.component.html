@@ -1,0 +1,22 @@
+<!-- ResponseComponent HTML -->
+<div>
+    <div *ngIf="!editing">
+      <div *ngIf="response !=null && response.name != null">{{ response?.name }}</div>
+          <!-- Display the response message as HTML -->
+        <div [innerHTML]="response?.responseMessage"></div>
+
+          <!-- Show "Edit" button if the response belongs to the logged-in user -->
+        <button *ngIf="response?.userId === loggedInUserId" (click)="enableEdit()">Edit Response</button>
+     </div>
+
+    <div *ngIf="editing">
+      <!-- Display the editor for editing the response -->
+      <editor [(ngModel)]="newResponseContent" name="responseContent" [init]="{ toolbar: 'bold italic underline', menubar: false }"></editor>
+
+      <button (click)="saveResponse()">Save</button>
+      <button (click)="cancelEdit()">Cancel</button>
+    </div>
+</div>
+
+
+
