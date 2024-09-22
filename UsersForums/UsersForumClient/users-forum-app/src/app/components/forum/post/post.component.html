@@ -1,0 +1,62 @@
+
+<div class="poster-name">{{post.name}}</div>
+<!-- Display mode (rich text) -->
+<div *ngIf="!post.isEditing">
+  <h1 class="post-title">{{ post.title }}</h1>
+  <div class="post-content" [innerHTML]="post.content"></div>
+  <button *ngIf="post.userId === loggedInUserId" (click)="enableEditPost(post)">Edit Post</button>
+  <button *ngIf="post.userId === loggedInUserId" (click)="deletePost(post)">Delete Post</button>
+
+</div>
+
+<!-- Edit mode with TinyMCE -->
+<div *ngIf="post.isEditing">
+  <h1>Edit Post</h1>
+  <input type="text" [(ngModel)]="post.title" name="title" required placeholder="Enter your post title">
+  <editor [(ngModel)]="post.content"
+          [init]="{
+              plugins: 'link image code',
+              toolbar: 'undo redo | formatselect | bold italic underline | link image code'
+           }">
+  </editor>
+  <button (click)="savePost(post)">Save Post</button>
+  <button (click)="cancelEdit(post)">Cancel</button>
+</div>
+<hr />
+<h4 class="post-responses">Responses</h4>
+<div class="responses-panel" *ngFor="let response of post.responses">
+  <app-response
+    [response]="response"
+    [loggedInUserId]="loggedInUserId"
+    (responseUpdated)="onResponseUpdated($event)">
+</app-response>
+
+</div>
+<button color="primary" (click)="toggleAddResponse()">
+  {{ showAddResponse ? 'Cancel' : 'Add a Response' }}
+</button>
+<!-- <button mat-raised-button color="primary" (click)="toggleAddResponse()">
+  {{ showAddResponse ? 'Cancel' : 'Add a Response' }}
+</button> -->
+<div>
+  <a [routerLink]="['/forum']" >Post Lists</a>
+</div>
+
+<!-- Display Add Response Form only if the user clicks the button -->
+<div *ngIf="showAddResponse">
+  <h3>Add a Response</h3>
+  <form (ngSubmit)="submitResponse()">
+    <editor [(ngModel)]="newResponseContent"
+            name="responseContent"
+                      [init]="{
+            menubar: false,
+            plugins: 'lists link image',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                     alignleft aligncenter alignright alignjustify | \
+                     bullist numlist outdent indent | removeformat | help'
+          }">
+    </editor>
+    <button mat-raised-button color="primary" type="submit">Submit Response</button>
+  </form>
+</div>
+
